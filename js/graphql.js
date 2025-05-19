@@ -1,22 +1,3 @@
-(async () => {
-  try {
-    const data = await fetchGraphQL(queryidLog);
-    const user = data.user[0];
-
-    
-    console.log("ID:", user.id);
-    console.log("Login:", user.login);
-
-    //add user data to the page
-    document.getElementById("user-id").textContent = user.id;
-    document.getElementById("user-login").textContent = user.login;
-
-  } catch (err) {
-    console.error("Erreur lors de la récupération de l'utilisateur :", err);
-    document.body.innerHTML = `<p>Erreur : ${err.message}</p>`;
-  }
-})();
-
 // GraphQL query to fetch user ID and login
 const queryidLog = `{
   user {
@@ -24,7 +5,6 @@ const queryidLog = `{
     login
   }
 }`;
-
 
 import { getToken } from './auth.js';
 
@@ -51,3 +31,21 @@ export async function fetchGraphQL(query, variables = {}) {
 
   return json.data;
 }
+
+(async () => {
+  try {
+    const data = await fetchGraphQL(queryidLog);
+    const user = data.user[0];
+
+    console.log("ID:", user.id);
+    console.log("Login:", user.login);
+
+    //add user data to the page
+    document.getElementById("user-id").textContent = user.id;
+    document.getElementById("user-login").textContent = user.login;
+
+  } catch (err) {
+    console.error("Erreur lors de la récupération de l'utilisateur :", err);
+    document.body.innerHTML = `<p>Erreur : ${err.message}</p>`;
+  }
+})();
