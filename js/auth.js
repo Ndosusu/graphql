@@ -1,4 +1,4 @@
-const API_URL = "https://((DOMAIN))/api/auth/signin";
+const API_URL = "https://zone01normandie.org/api/auth/signin";
 
 export async function loginUser(username, password) {
   const basicAuth = btoa(`${username}:${password}`);
