@@ -4,6 +4,7 @@ export const queryidLog = `{
   user {
     id
     login
+    auditRatio
   }
 }`;
 
