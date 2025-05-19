@@ -1,10 +1,4 @@
-// GraphQL query to fetch user ID and login
-const queryidLog = `{
-  user {
-    id
-    login
-  }
-}`;
+
 
 import { getToken } from './auth.js';
 
@@ -32,20 +26,44 @@ export async function fetchGraphQL(query, variables = {}) {
   return json.data;
 }
 
+import {
+  queryidLog,
+  GetAllXPGains,
+  GetPiscineStats,
+  PiscineXpWithDetails,
+  SkillsAmounts,
+  BestFriendQuery,
+  AllAuditQuery,
+  GithubLikeActivityQuery
+} from './queries.js';
+
+import { fetchGraphQL } from './your-fetch-graphql.js'; // ton module contenant fetchGraphQL
+
 (async () => {
   try {
-    const data = await fetchGraphQL(queryidLog);
-    const user = data.user[0];
+    const userData = await fetchGraphQL(queryidLog);
+    const user = userData.user[0];
 
-    console.log("ID:", user.id);
-    console.log("Login:", user.login);
-
-    //add user data to the page
     document.getElementById("user-id").textContent = user.id;
     document.getElementById("user-login").textContent = user.login;
 
+    // Exemple : récupération des stats XP Piscine
+    const piscineStats = await fetchGraphQL(GetPiscineStats);
+    console.log("XP Piscine:", piscineStats);
+
+    // Ajoute ici d'autres requêtes selon tes besoins
+    const skills = await fetchGraphQL(SkillsAmounts);
+    console.log("Skills:", skills);
+
+    const audits = await fetchGraphQL(AllAuditQuery);
+    console.log("Audits:", audits);
+
+    const activity = await fetchGraphQL(GithubLikeActivityQuery);
+    console.log("Activity:", activity);
+
   } catch (err) {
-    console.error("Erreur lors de la récupération de l'utilisateur :", err);
+    console.error("Erreur :", err);
     document.body.innerHTML = `<p>Erreur : ${err.message}</p>`;
   }
 })();
+
