@@ -35,9 +35,7 @@ import {
   BestFriendQuery,
   AllAuditQuery,
   GithubLikeActivityQuery
-} from './queries.js';
-
-import { fetchGraphQL } from './your-fetch-graphql.js'; // ton module contenant fetchGraphQL
+} from './query.js';
 
 (async () => {
   try {
