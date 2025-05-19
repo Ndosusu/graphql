@@ -31,7 +31,7 @@ import { getToken } from './auth.js';
 export async function fetchGraphQL(query, variables = {}) {
   const token = getToken(); // récupère le JWT stocké après login
 
-  const response = await fetch("https://madere.ytrack.learn.ynov.com/api/graphql-engine/v1/graphql", {
+  const response = await fetch("https://zone01normandie.org/api/graphql-engine/v1/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
