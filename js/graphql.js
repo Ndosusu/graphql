@@ -28,9 +28,7 @@ import {
   queryidLog,
   GetAllXPGains,
   GetPiscineStats,
-  PiscineXpWithDetails,
   SkillsAmounts,
-  BestFriendQuery,
   AllAuditQuery,
   GithubLikeActivityQuery,
 } from './query.js';
