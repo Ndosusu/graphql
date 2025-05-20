@@ -31,6 +31,8 @@ import {
   SkillsAmounts,
   AllAuditQuery,
   GithubLikeActivityQuery,
+  BestFriendQuery,
+  GetProgress,
 } from './query.js';
 
 (async () => {
@@ -43,8 +45,7 @@ import {
     document.getElementById("user-firstName").textContent = user.firstName;
     document.getElementById("user-lastName").textContent = user.lastName;
     document.getElementById("user-campus").textContent = user.campus;
-    document.getElementById("user-auditRatio").textContent = user.auditRatio;
-
+    document.getElementById("user-auditRatio").textContent = Math.round(user.auditRatio * 100) / 100;
 
     const piscineStats = await fetchGraphQL(GetPiscineStats);
     console.log("XP Piscine:", piscineStats);
@@ -116,6 +117,13 @@ import {
     const audits = await fetchGraphQL(AllAuditQuery);
     console.log("Audits:", audits);
 
+    // Ajout du nombre d'audits réalisés et reçus
+    const auditsList = audits.user[0]?.audits_as_auditor || [];
+    const auditsReceived = audits.user[0]?.audits_as_auditee || [];
+    const totalAudits = auditsList.length + auditsReceived.length;
+
+    document.getElementById("audits-section").textContent = totalAudits;
+
     const activity = await fetchGraphQL(GithubLikeActivityQuery);
     console.log("Activity:", activity);
 
@@ -123,7 +131,14 @@ import {
 
     const totalXpData = await fetchGraphQL(GetAllXPGains);
     const totalXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
-    document.getElementById("total-xp").textContent = totalXp;
+
+    if (totalXp > 1000) {
+      document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
+    } else if (totalXp > 1000000) {
+      document.getElementById("total-xp").textContent = Math.round(totalXp / 1000000) + "M";
+    } else {
+      document.getElementById("total-xp").textContent = totalXp;
+    }
     
     const xpTransactions = totalXpData.transaction;
 
@@ -185,6 +200,52 @@ new Chart(ctx, {
     }
   }
 });
+
+    const bestFriendData = await fetchGraphQL(BestFriendQuery);
+    const groups = bestFriendData.user[0]?.groups || [];
+    const myLogin = user.login;
+
+    const friendCount = {};
+    groups.forEach(g => {
+      const members = g.group.members.map(m => m.user.login);
+      members.forEach(login => {
+        if (login !== myLogin) {
+          friendCount[login] = (friendCount[login] || 0) + 1;
+        }
+      });
+    });
+
+    // Trier par nombre de projets communs (décroissant)
+    const sortedFriends = Object.entries(friendCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4);
+
+    const bestFriendList = document.getElementById("bestfriend-list");
+    bestFriendList.innerHTML = ""; // Vide la liste avant d'ajouter
+
+    sortedFriends.forEach(([login, count]) => {
+      const li = document.createElement("li");
+      li.textContent = `${login} (${count} projets communs)`;
+      bestFriendList.appendChild(li);
+    });
+
+    const progressData = await fetchGraphQL(GetProgress);
+    const progresses = progressData.progress || [];
+
+    // Trier par date décroissante et prendre les 5 derniers
+    const last5 = progresses
+      .slice() // copie pour ne pas modifier l'original
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+      .slice(0, 5);
+
+    const progressListElem = document.getElementById("progress-list");
+    progressListElem.innerHTML = ""; // Vide avant d'ajouter
+
+    last5.forEach(prog => {
+      const li = document.createElement("li");
+      li.textContent = prog.path.split('/').pop();
+      progressListElem.appendChild(li);
+    });
 
   } catch (err) {
     console.error("Erreur :", err);

@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
   <html>
   <head>
     <title>Profil</title>
@@ -7,32 +7,31 @@
   <body>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <h1>Bienvenue, <span id="login">...</span></h1>
-    <button id="logout">Logout</button>
+    <header>
+      <h1>Bienvenue, <span id="user-firstName">...</span> <span id="user-lastName"> </span> </h1>
+      <button id="logout">Logout</button>
+    </header>
 
     <section id="infos">
-      <!-- Infos utilisateur -->
-      <h2>Mon Profil</h2>
-      <p>ID utilisateur : <span id="user-id"></span></p>
-      <p>Login : <span id="user-login"></span></p>
-      <p>Total xp : <span id="total-xp"></span></p>
-      <p>Campus : <span id="user-campus"></span></p>
-      <p>First Name : <span id="user-firstName"></span></p>
-      <p>Last Name : <span id="user-lastName"></span></p>
-      <p>Audit Ratio : <span id="user-auditRatio"></span></p>
-
-      <!-- Ajout des sections dynamiques debugg-->
-      <div id="skills-section">
-        <h3>Skills</h3>
-        <ul id="skills-list"></ul>
+      <div class="profile-card">
+        <h2>Mon Profil</h2>
+        <p>ID utilisateur : <span id="user-id"></span></p>
+        <p>Login : <span id="user-login"></span></p>
+        <p>Total xp : <span id="total-xp"></span></p>
+        <p>Campus : <span id="user-campus"></span></p>
+        <p>Audit Ratio : <span id="user-auditRatio"></span></p>
       </div>
-      <div id="groups-section">
-        <h3>Groupes</h3>
-        <ul id="groups-list"></ul>
+      <div class="profile-card">
+        <h3>Dernier Projets</h3>
+        <ul id="progress-list"></ul>
       </div>
-      <div id="audits-section">
-        <h3>Audits réalisés</h3>
-        <ul id="audits-list"></ul>
+      <div id="bestfriend-section" class="profile-card">
+        <h3>BestFriend</h3>
+        <ul id="bestfriend-list"></ul>
+      </div>
+      <div class="profile-card">
+      <h3>Audits réalisés</h3>
+      <p>Total audits : <span id="audits-section"></span></p>
       </div>
     </section>
 

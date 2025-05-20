@@ -10,7 +10,25 @@ export const queryidLog = `{
     firstName
   }
 }`;
-//debugger
+
+export const GetProgress = `
+{
+  progress {
+    path
+    createdAt
+    updatedAt
+    pathByPath {
+      objectChildId
+      objectId
+      parentId
+    }
+    user {
+      id
+      login
+    }
+  }
+}
+`;
 
 export const GetAllXPGains = `
   query GetUserDetailedXp {
