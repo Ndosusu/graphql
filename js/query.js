@@ -5,8 +5,12 @@ export const queryidLog = `{
     id
     login
     auditRatio
+    campus
+    lastName
+    firstName
   }
 }`;
+//debugger
 
 export const GetAllXPGains = `
   query GetUserDetailedXp {
