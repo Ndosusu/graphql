@@ -132,13 +132,13 @@ import {
     const totalXpData = await fetchGraphQL(GetAllXPGains);
     const totalXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
 
-    // if (totalXp > 1000) {
-    //   document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
-    // } else if (totalXp > 1000000) {
-    //   document.getElementById("total-xp").textContent = Math.round(totalXp / 1000000) + "M";
-    // } else {
+    if (totalXp > 1000) {
+      document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
+    } else if (totalXp > 1000000) {
+      document.getElementById("total-xp").textContent = Math.round(totalXp / 1000000) + "M";
+    } else {
       document.getElementById("total-xp").textContent = totalXp;
-    // }
+    }
     
     const xpTransactions = totalXpData.transaction;
 
