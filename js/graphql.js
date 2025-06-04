@@ -131,19 +131,37 @@ import {
 
     const totalXpData = await fetchGraphQL(GetAllXPGains);
 
-    // Filtrer les transactions pour exclure les XP non pertinents
-    const validXpTransactions = totalXpData.transaction.filter(tx => {
-      // Exclure les piscines complètement
-      if (tx.path.includes('piscine-')) return false;
-      
-      // Exclure d'autres chemins spécifiques si nécessaire
-      if (tx.path.includes('/onboarding/')) return false;
-      
-      // Vous pouvez ajouter d'autres filtres selon vos besoins
-      return true;
-    });
+console.log("Toutes les transactions XP:", totalXpData.transaction);
+console.log("Nombre total de transactions:", totalXpData.transaction.length);
 
-    const totalXp = validXpTransactions.reduce((sum, t) => sum + t.amount, 0);
+// Analysons ce qui est exclu
+const piscineTransactions = totalXpData.transaction.filter(tx => tx.path.includes('piscine-'));
+const onboardingTransactions = totalXpData.transaction.filter(tx => tx.path.includes('/onboarding/'));
+
+console.log("Transactions piscine exclues:", piscineTransactions.length);
+console.log("XP piscine total:", piscineTransactions.reduce((sum, t) => sum + t.amount, 0));
+console.log("Transactions onboarding exclues:", onboardingTransactions.length);
+console.log("XP onboarding total:", onboardingTransactions.reduce((sum, t) => sum + t.amount, 0));
+
+// Filtrer les transactions pour exclure les XP non pertinents
+const validXpTransactions = totalXpData.transaction.filter(tx => {
+  // Exclure les piscines complètement
+  if (tx.path.includes('piscine-')) return false;
+  
+  // Exclure d'autres chemins spécifiques si nécessaire
+  if (tx.path.includes('/onboarding/')) return false;
+  
+  return true;
+});
+
+console.log("Transactions valides:", validXpTransactions.length);
+
+const totalXp = validXpTransactions.reduce((sum, t) => sum + t.amount, 0);
+const totalAllXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
+
+console.log("XP total (toutes transactions):", totalAllXp);
+console.log("XP total (filtrées):", totalXp);
+console.log("Différence:", totalAllXp - totalXp);
 
     if (totalXp > 1000) {
       document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
