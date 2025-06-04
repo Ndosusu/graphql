@@ -130,7 +130,12 @@ import {
 
 
     const totalXpData = await fetchGraphQL(GetAllXPGains);
-    const totalXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
+    let totalXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
+
+    // Retirer 5000 XP si l'ID utilisateur est 3497
+    if (user.id === 3497) {
+      totalXp -= 5000;
+    }
 
     if (totalXp > 1000) {
       document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
