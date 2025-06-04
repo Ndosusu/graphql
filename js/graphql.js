@@ -137,7 +137,7 @@ import {
     // } else if (totalXp > 1000000) {
     //   document.getElementById("total-xp").textContent = Math.round(totalXp / 1000000) + "M";
     // } else {
-    //   document.getElementById("total-xp").textContent = totalXp;
+      document.getElementById("total-xp").textContent = totalXp;
     // }
     
     const xpTransactions = totalXpData.transaction;
