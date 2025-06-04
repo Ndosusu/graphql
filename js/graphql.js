@@ -130,7 +130,20 @@ import {
 
 
     const totalXpData = await fetchGraphQL(GetAllXPGains);
-    const totalXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
+
+    // Filtrer les transactions pour exclure les XP non pertinents
+    const validXpTransactions = totalXpData.transaction.filter(tx => {
+      // Exclure les piscines complètement
+      if (tx.path.includes('piscine-')) return false;
+      
+      // Exclure d'autres chemins spécifiques si nécessaire
+      if (tx.path.includes('/onboarding/')) return false;
+      
+      // Vous pouvez ajouter d'autres filtres selon vos besoins
+      return true;
+    });
+
+    const totalXp = validXpTransactions.reduce((sum, t) => sum + t.amount, 0);
 
     if (totalXp > 1000) {
       document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
@@ -140,7 +153,8 @@ import {
       document.getElementById("total-xp").textContent = totalXp;
     }
     
-    const xpTransactions = totalXpData.transaction;
+    // Pour le graphique, utilisez aussi les transactions filtrées
+    const xpTransactions = validXpTransactions;
 
 // Trier par date
 xpTransactions.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
