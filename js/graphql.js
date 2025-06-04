@@ -145,10 +145,10 @@ console.log("XP onboarding total:", onboardingTransactions.reduce((sum, t) => su
 
 // Filtrer les transactions pour exclure les XP non pertinents
 const validXpTransactions = totalXpData.transaction.filter(tx => {
-  // Exclure les piscines complètement
-  if (tx.path.includes('piscine-')) return false;
+  // Inclure les piscines maintenant
+  // if (tx.path.includes('piscine-')) return false;
   
-  // Exclure d'autres chemins spécifiques si nécessaire
+  // Exclure seulement l'onboarding
   if (tx.path.includes('/onboarding/')) return false;
   
   return true;
