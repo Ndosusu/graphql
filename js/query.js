@@ -35,7 +35,13 @@ export const GetAllXPGains = `
     transaction(
       where: {
         type: {_eq: "xp"},
-        path: {_niregex: "/(piscine-[^/]+/)"}
+        _not: {
+          _or: [
+            {path: {_like: "%piscine-go%"}},
+            {path: {_like: "%piscine-js%"}},
+            {path: {_like: "%piscine-%"}}
+          ]
+        }
       },
       order_by: {createdAt: desc}
     ) {
