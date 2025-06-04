@@ -34,8 +34,7 @@ export const GetAllXPGains = `
   query GetUserDetailedXp {
     transaction(
       where: {
-        type: {_eq: "xp"},
-        path: {_niregex: "/(piscine-[^/]+/)"}
+        type: {_eq: "xp"}
       },
       order_by: {createdAt: desc}
     ) {
