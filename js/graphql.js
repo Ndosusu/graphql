@@ -130,38 +130,7 @@ import {
 
 
     const totalXpData = await fetchGraphQL(GetAllXPGains);
-
-console.log("Toutes les transactions XP:", totalXpData.transaction);
-console.log("Nombre total de transactions:", totalXpData.transaction.length);
-
-// Analysons ce qui est exclu
-const piscineTransactions = totalXpData.transaction.filter(tx => tx.path.includes('piscine-'));
-const onboardingTransactions = totalXpData.transaction.filter(tx => tx.path.includes('/onboarding/'));
-
-console.log("Transactions piscine exclues:", piscineTransactions.length);
-console.log("XP piscine total:", piscineTransactions.reduce((sum, t) => sum + t.amount, 0));
-console.log("Transactions onboarding exclues:", onboardingTransactions.length);
-console.log("XP onboarding total:", onboardingTransactions.reduce((sum, t) => sum + t.amount, 0));
-
-// Filtrer les transactions pour exclure les XP non pertinents
-const validXpTransactions = totalXpData.transaction.filter(tx => {
-  // Inclure les piscines maintenant
-  // if (tx.path.includes('piscine-')) return false;
-  
-  // Exclure seulement l'onboarding
-  if (tx.path.includes('/onboarding/')) return false;
-  
-  return true;
-});
-
-console.log("Transactions valides:", validXpTransactions.length);
-
-const totalXp = validXpTransactions.reduce((sum, t) => sum + t.amount, 0);
-const totalAllXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
-
-console.log("XP total (toutes transactions):", totalAllXp);
-console.log("XP total (filtrées):", totalXp);
-console.log("Différence:", totalAllXp - totalXp);
+    const totalXp = totalXpData.transaction.reduce((sum, t) => sum + t.amount, 0);
 
     if (totalXp > 1000) {
       document.getElementById("total-xp").textContent = Math.round(totalXp / 1000) + "k";
@@ -171,8 +140,7 @@ console.log("Différence:", totalAllXp - totalXp);
       document.getElementById("total-xp").textContent = totalXp;
     }
     
-    // Pour le graphique, utilisez aussi les transactions filtrées
-    const xpTransactions = validXpTransactions;
+    const xpTransactions = totalXpData.transaction;
 
 // Trier par date
 xpTransactions.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
